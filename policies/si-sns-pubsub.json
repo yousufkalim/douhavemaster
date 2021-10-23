@@ -1,0 +1,16 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sns:Publish",
+                "sns:Subscribe"
+            ],
+            "Resource": [
+                "arn:aws:sns:us-east-2:946837758374:DOUHAVE_DEV_EVENTS",
+                "arn:aws:sns:us-east-2:946837758374:DOUHAVE_PROD_EVENTS"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "DoUHave-executor",
+    "name": "DoUHave",
+    "region": "us-east-2"
+  },
+  "api": {
+    "id": "chdhjoyz6f"
+  }
+}
