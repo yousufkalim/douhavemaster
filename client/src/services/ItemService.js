@@ -1,8 +1,8 @@
-import axios from 'axios';
-import Constant from '../util/Constant';
-import UserService from './UserService';
-import { BehaviorSubject } from 'rxjs';
-import { handle403Errors } from '../util/helper';
+import axios from "axios";
+import Constant from "../util/Constant";
+import UserService from "./UserService";
+import { BehaviorSubject } from "rxjs";
+import { handle403Errors } from "../util/helper";
 const searchBehaviorObject = new BehaviorSubject(null);
 
 /**
@@ -11,23 +11,24 @@ const searchBehaviorObject = new BehaviorSubject(null);
  * @author dassiorleando
  */
 const ItemService = {
-
   /**
    * Get the socket client behavior object
    */
-  getSearchBehaviorObject: function () {
+  getSearchBehaviorObject: function() {
     return searchBehaviorObject;
   },
-  
+
   /**
    * Loads the item details by id
    * @returns A promise that resolves to the item found
    */
-  findById: function (itemId) {
+  findById: function(itemId) {
     return new Promise(async (resolve, reject) => {
-      if (!itemId) return reject(new Error('No item id provided'));
+      if (!itemId) return reject(new Error("No item id provided"));
       try {
-        const { data } = await axios.get(`${Constant.API_ENDPOINT}/items/item/${itemId}`);
+        const { data } = await axios.get(
+          `${Constant.API_ENDPOINT}/items/item/${itemId}`
+        );
         resolve(data && data.item);
       } catch (error) {
         handle403Errors(error);
@@ -45,10 +46,20 @@ const ItemService = {
    * @param {string} limit The limit of data to send back, useful for pagination (30 by default).
    * @returns A promise that resolves to the items found.
    */
-  getAllItems: function (category = '', lastId = '', zipCode = '', distance = '', limit = 35) {
+  getAllItems: function(
+    category = "",
+    lastId = "",
+    zipCode = "",
+    distance = "",
+    limit = 35
+  ) {
     return new Promise(async (resolve, reject) => {
       try {
-        const { data } = await axios.get(`${Constant.API_ENDPOINT}/items?category=${ category ? category : 'all' }&lastId=${lastId}&zipCode=${zipCode}&distance=${distance}&limit=${limit}`);
+        const { data } = await axios.get(
+          `${Constant.API_ENDPOINT}/items?category=${
+            category ? category : "all"
+          }&lastId=${lastId}&zipCode=${zipCode}&distance=${distance}&limit=${limit}`
+        );
         resolve(data);
       } catch (error) {
         handle403Errors(error);
@@ -61,11 +72,13 @@ const ItemService = {
    * Loads the user's items
    * @returns A promise that resolves to the items found
    */
-  getUserItems: function (userId) {
+  getUserItems: function(userId) {
     return new Promise(async (resolve, reject) => {
-      if (!userId) return reject(new Error('No user id provided'));
+      if (!userId) return reject(new Error("No user id provided"));
       try {
-        const { data } = await axios.get(`${Constant.API_ENDPOINT}/items/user/${userId}`);
+        const { data } = await axios.get(
+          `${Constant.API_ENDPOINT}/items/user/${userId}`
+        );
         resolve(data && data.items);
       } catch (error) {
         handle403Errors(error);
@@ -78,12 +91,15 @@ const ItemService = {
    * Loads the user's saved items
    * @returns A promise that resolves to the user's saved items found
    */
-  getSavedItems: function (userId) {
+  getSavedItems: function(userId) {
     return new Promise(async (resolve, reject) => {
-      if (!userId) return reject(new Error('No user id provided'));
+      if (!userId) return reject(new Error("No user id provided"));
       try {
         const userInfo = UserService.getUserSessionDetails() || {};
-        const { data } = await axios.get(`${Constant.API_ENDPOINT}/savelist/${userId}`, { headers: { Authorization: `Bearer ${userInfo.token}` } });
+        const { data } = await axios.get(
+          `${Constant.API_ENDPOINT}/savelist/${userId}`,
+          { headers: { Authorization: `Bearer ${userInfo.token}` } }
+        );
         resolve(data && data.items);
       } catch (error) {
         handle403Errors(error);
@@ -96,12 +112,16 @@ const ItemService = {
    * Post a new item
    * @returns A promise that resolves to the user's saved items found
    */
-  postItem: function (itemData) {
+  postItem: function(itemData) {
     return new Promise(async (resolve, reject) => {
-      if (!itemData) return reject(new Error('No user id provided'));
+      if (!itemData) return reject(new Error("No user id provided"));
       try {
         const userInfo = UserService.getUserSessionDetails() || {};
-        const { data } = await axios.post(`${Constant.API_ENDPOINT}/items`, itemData, { headers: { Authorization: `Bearer ${userInfo.token}` } });
+        const { data } = await axios.post(
+          `${Constant.API_ENDPOINT}/items`,
+          itemData,
+          { headers: { Authorization: `Bearer ${userInfo.token}` } }
+        );
         resolve(data);
       } catch (error) {
         handle403Errors(error);
@@ -109,7 +129,6 @@ const ItemService = {
       }
     });
   },
-
-}
+};
 
 export default ItemService;

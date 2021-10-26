@@ -14,8 +14,8 @@ const recaptchaService = require("../../services/recaptcha");
 
 router.post("/signup", async (req, res) => {
   let { email, password, firstName, lastName, subscribe, captcha } = req.body; // The incoming email & pwd
-  if (email) email = email.toLowerCase(); // Lowering the email case
 
+  if (email) email = email.toLowerCase(); // Lowering the email case
   // Some validations
   const isCaptchaValid =
     (await recaptchaService.verify(captcha).catch(Util.error)) || false; // Captcha verification
@@ -23,10 +23,10 @@ router.post("/signup", async (req, res) => {
     return res
       .status(400)
       .json({ success: false, message: "Invalid data provided!" });
-  if (!isCaptchaValid)
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid captcha!" });
+  // if (!isCaptchaValid)
+  //   return res
+  //     .status(400)
+  //     .json({ success: false, message: "Invalid captcha!" });
 
   User.find({ email: email })
     .exec()
@@ -68,7 +68,7 @@ router.post("/signup", async (req, res) => {
             const emailConfirmationResult = await userService.confirmationEmail(
               userObject
             );
-
+            console.log(emailConfirmationResult, "emailConfirmationResult");
             const registrationDate = new Date(result.createdAt || Date.now());
             const registrationDateFormatted =
               registrationDate.toLocaleDateString() +
@@ -106,7 +106,7 @@ router.post("/signup", async (req, res) => {
           .catch((err) => {
             res.status(500).json({
               error: err,
-              message: err,
+              message: err.message,
             });
           });
       }
@@ -196,38 +196,38 @@ router.get("/all", permGuard.check(["MODERATOR", "ADMIN"]), (req, res) => {
     });
 });
 
-router.get("/user/:userId", permGuard.check(["USER", "ADMIN"]), (req, res) => {
-  User.findById({ _id: req.params.userId })
-    .exec()
-    .then((result) => {
+router.get(
+  "/user/:userId",
+  permGuard.check(["USER", "ADMIN"]),
+  async (req, res) => {
+    try {
+      let result = await User.findById({ _id: req.params.userId });
       if (req.params.userId != req.user.userId) {
         return res.status(401).json({
           message: "Auth Failed 5",
         });
-      } else {
-        return res.status(200).json({
-          message: "User GET",
-          userName: result.userName,
-          firstName: result.firstName,
-          lastName: result.lastName,
-          email: result.email,
-          streetAddress: result.streetAddress,
-          profilePic: result.profilePic || "",
-          city: result.city,
-          state: result.state,
-          zip: result.zip,
-          emailConfirmed: result.emailConfirmed || false,
-          // TODO: return back the user's permissions if the request is made by an admin
-          // permissions: user[0].permissions || []
-        });
       }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: err,
+      return res.status(200).json({
+        message: "User GET",
+        userName: result.userName,
+        firstName: result.firstName,
+        lastName: result.lastName,
+        email: result.email,
+        streetAddress: result.streetAddress,
+        profilePic: result.profilePic || "",
+        city: result.city,
+        state: result.state,
+        zip: result.zip,
+        emailConfirmed: result.emailConfirmed || false,
+        // TODO: return back the user's permissions if the request is made by an admin
+        // permissions: user[0].permissions || []
       });
-    });
-});
+    } catch (error) {
+      console.log("Error--->", error.message);
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
 
 router.delete("/:userId", permGuard.check(["USER", "ADMIN"]), (req, res) => {
   if (req.params.userId != req.user.userId) {
@@ -259,6 +259,7 @@ router.delete("/:userId", permGuard.check(["USER", "ADMIN"]), (req, res) => {
 router.patch(
   "/edit/:userId",
   permGuard.check(["USER", "ADMIN"]),
+
   async (req, res) => {
     if (req.params.userId != req.user.userId) {
       return res.status(401).json({
@@ -270,6 +271,7 @@ router.patch(
         return res
           .status(404)
           .json({ success: false, message: "User not found!" });
+      let uploadedPicture = req.body.profilePic;
 
       // Let's set some fields to change.
       userFound.userName = req.body.userName;
@@ -279,7 +281,7 @@ router.patch(
       userFound.city = req.body.city;
       userFound.state = req.body.state;
       userFound.zip = req.body.zip;
-      userFound.profilePic = req.body.profilePic;
+      userFound.profilePic = uploadedPicture;
       userFound
         .save()
         .then(async (result) => {
@@ -295,8 +297,9 @@ router.patch(
           });
         })
         .catch((err) => {
+          console.log(err.message, "err.message");
           res.status(500).json({
-            error: err,
+            error: err.message,
           });
         });
     }

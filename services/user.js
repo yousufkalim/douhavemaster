@@ -88,7 +88,6 @@ exports.confirmationEmail = async function (user) {
       `Thank you for using DoUHave. \n\n` +
       `Regards, \n` +
       `DoUHave Team.`;
-
     // Sending an email explicitly
     const emailResult = await emailService
       .sendEmail(`Email confirmation`, message, email)

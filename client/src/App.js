@@ -164,32 +164,33 @@ class App extends Component {
     if (obj && obj.token) {
       const { token } = obj;
       //Verify
-
-      fetch(`${Constant.API_ENDPOINT}/user/verify/${token}`)
-        .then((res) => res.json())
-        .then((json) => {
-          console.log("user", json);
-          if (json.message === "User Verified") {
-            const userSession = {
-              token,
-              userName: json.userName,
-              firstName: json.firstName,
-              userId: json.userId,
-              email: json.email,
-              profilePic: json.profilePic || "",
-              permissions: json.permissions || [],
-              emailConfirmed: json.emailConfirmed || false,
-              isAuth: true,
-            };
-            this.setState(userSession);
-            UserService.setUser(userSession);
-          } else {
-            UserService.deleteUserSession();
-            this.setState({
-              isAuth: false,
-            });
-          }
-        });
+      if (token) {
+        fetch(`${Constant.API_ENDPOINT}/user/verify/${token}`)
+          .then((res) => res.json())
+          .then((json) => {
+            console.log("user", json);
+            if (json.message === "User Verified") {
+              const userSession = {
+                token,
+                userName: json.userName,
+                firstName: json.firstName,
+                userId: json.userId,
+                email: json.email,
+                profilePic: json.profilePic || "",
+                permissions: json.permissions || [],
+                emailConfirmed: json.emailConfirmed || false,
+                isAuth: true,
+              };
+              this.setState(userSession);
+              UserService.setUser(userSession);
+            } else {
+              UserService.deleteUserSession();
+              this.setState({
+                isAuth: false,
+              });
+            }
+          });
+      }
     } else {
       UserService.deleteUserSession();
       this.setState({
@@ -272,13 +273,33 @@ class App extends Component {
               dataLength={this.state.searchResults.length}
               next={this.getItemsInfinite}
               hasMore={!this.state.disableInfiniteScroll}
-              loader={
-                <Spinner
-                  className="block-center"
-                  style={{ width: "5rem", height: "5rem" }}
-                />
-              }
+              // loader={
+              //   <Spinner
+              //     className="block-center"
+              //     style={{ width: "5rem", height: "5rem" }}
+              //   />
+              // }
             >
+              <Spinner
+                className="block-center"
+                style={{
+                  width: "5rem",
+                  height: "5rem",
+                  position: "absolute",
+                  top: "50%",
+                  left: "55%",
+                }}
+              />
+              <h4
+                style={{
+                  color: "#000",
+                  position: "absolute",
+                  top: "70%",
+                  left: "52%",
+                }}
+              >
+                Did You Know
+              </h4>
               <SearchResults
                 isAuth={isAuth}
                 userId={userId}

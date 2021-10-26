@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { BiConversation } from "react-icons/bi";
+import { BiConversation, BiBell } from "react-icons/bi";
 import UserService from "../services/UserService";
 import { deleteFromStorage } from "../util/storage";
+import DEFAULT_IMAGE from "../img/user3.jpg";
+import Constant from "../util/Constant";
 
 class MobileLogin extends Component {
   constructor(props) {
@@ -78,11 +80,12 @@ class MobileLogin extends Component {
               <a href="/messages">
                 <BiConversation className="profile-icon" />
               </a>
+              <BiBell className="profile-icon" />
               <a style={{ color: "#000000" }} href="/userpanel">
                 {/* <BiUserCircle className="profile-icon" /> */}
                 <img
                   alt=""
-                  src={profilePic}
+                  src={profilePic ? profilePic : DEFAULT_IMAGE}
                   style={{
                     width: "40px",
                     height: "40px",

@@ -1420,29 +1420,28 @@ router.get(
   "/presigned_url/:space",
   permGuard.check(["USER", "ADMIN"]),
   async function (req, res) {
-    const fileName = req.query.objectName;
-    const fileType = req.query.contentType;
-    const space = req.params.space || "itempics";
-    const supportedImageFormats = ["image/png", "image/jpg", "image/jpeg"];
+    try {
+      const fileName = req.query.objectName;
+      const fileType = req.query.contentType;
+      const space = req.params.space || "itempics";
+      const supportedImageFormats = ["image/png", "image/jpg", "image/jpeg"];
 
-    if (!fileName || !fileType)
-      return res
-        .status(status.BAD_REQUEST)
-        .json({
+      if (!fileName || !fileType)
+        return res.status(status.BAD_REQUEST).json({
           success: false,
           message: "Bad parameters (file name and/or type)",
         });
-    if (supportedImageFormats.indexOf(fileType) === -1)
-      return res
-        .status(status.BAD_REQUEST)
-        .json({
+      if (supportedImageFormats.indexOf(fileType) === -1)
+        return res.status(status.BAD_REQUEST).json({
           success: false,
           message: "Unsupported file type, only png and jpg are supported.",
         });
 
-    const url = await s3Service.getPreSignedURL(fileName, fileType, space);
-
-    res.status(status.OK).json({ success: true, signedUrl: url });
+      const url = await s3Service.getPreSignedURL(fileName, fileType, space);
+      res.json({ success: true, signedUrl: url });
+    } catch (error) {
+      console.log("Error----->", error.message);
+    }
   }
 );
 

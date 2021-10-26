@@ -28,4 +28,6 @@ app.set("trust proxy", true);
  * @param {number} port the port to run the project on
  * @returns {void}
  */
-server.listen(port, function () {});
+server.listen(port, function () {
+  console.log(`server is listening on PORT:${port}`);
+});

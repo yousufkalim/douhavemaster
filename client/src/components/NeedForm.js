@@ -682,7 +682,9 @@ class NeedForm extends Component {
             ) : null}
             <ReactS3Uploader
               className="douhave-s3-uploader"
-              signingUrl={`${Constant.API_ENDPOINT}/items/presigned_url/itempics`}
+              signingUrl={`${
+                Constant.API_ENDPOINT
+              }/items/presigned_url/itempics`}
               signingUrlMethod="GET"
               accept="image/*"
               onProgress={this.onProgress}
@@ -861,7 +863,7 @@ class NeedForm extends Component {
           </button>
 
           {this.state.submitError ===
-            "Your Requested Item has been posted, Please proceed to the home page to see your listing." ? (
+          "Your Requested Item has been posted, Please proceed to the home page to see your listing." ? (
             <button
               style={{ border: "none" }}
               onClick={() => window.location.reload(false)}
@@ -875,7 +877,7 @@ class NeedForm extends Component {
           ) : null}
 
           {this.state.submitError ===
-            "Your Requested Item has been posted, Please proceed to the home page to see your listing." ? (
+          "Your Requested Item has been posted, Please proceed to the home page to see your listing." ? (
             <a
               href="https://douhave.square.site/product/top-5-local-matches-/4?cs=true"
               target="_blank"

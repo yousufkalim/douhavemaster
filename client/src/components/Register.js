@@ -93,7 +93,8 @@ class Register extends Component {
     this.setState({ signUpError: "", signUpSuccess: "" });
 
     // Some validations
-    if (!signUpEmail || !signUpPassword || !captcha)
+    // if (!signUpEmail || !signUpPassword || !captcha)
+    if (!signUpEmail || !signUpPassword)
       return this.setState({
         signUpError: "Invalid user data and/or captcha provided.",
       });
@@ -189,7 +190,7 @@ class Register extends Component {
               fontWeight: "700",
             }}
           >
-            LOGIN INFORMATION
+            LOGIN INFORMATIONS
           </div>
           <div className="SignupInput">
             <input
