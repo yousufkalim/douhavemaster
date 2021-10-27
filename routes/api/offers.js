@@ -69,42 +69,16 @@ router.get(
 router.get(
   "/itemowner/:userId",
   permGuard.check(["USER", "ADMIN"]),
-  (req, res, next) => {
-    Offer.find({ itemOwner: req.params.userId })
-      .select(
-        "_id itemId itemOwner submittedAt myOffer submittedBy contactPhone contactEmail offerMessage accepted messageBack"
-      )
-      .exec()
-      .then((docs) => {
-        const response = {
-          count: docs.length,
-          items: docs.map((doc) => {
-            return {
-              _id: doc._id,
-              itemId: doc.itemId,
-              itemOwner: doc.itemOwner,
-              submittedAt: doc.submittedAt,
-              myOffer: doc.myOffer,
-              submittedBy: doc.submittedBy,
-              contactPhone: doc.contactPhone,
-              contactEmail: doc.contactEmail,
-              offerMessage: doc.offerMassage,
-              accepted: doc.accepted,
-              messageBack: doc.messageBack,
-              request: {
-                type: "GET",
-                url: "/offers/itemowner/" + doc.itemOwner,
-              },
-            };
-          }),
-        };
-        res.status(200).json(response);
-      })
-      .catch((err) => {
-        res.status(500).json({
-          error: err,
-        });
+  async (req, res, next) => {
+    try {
+      let offer = await Offer.find({
+        $and: [{ messageReciever: req.params.userId }, { messageSeen: false }],
       });
+
+      res.status(200).json({ count: offer.length });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
 );
 
@@ -209,12 +183,10 @@ router.post("/", permGuard.check(["USER", "ADMIN"]), async (req, res, next) => {
 
   // The owner shouldn't submit an offer on his posts
   if (item.submittedby1.toString() === submitter)
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: "You can not submit an offer on your own posts!",
-      });
+    return res.status(400).json({
+      success: false,
+      message: "You can not submit an offer on your own posts!",
+    });
 
   // Check if the user already submitted an offer for this item
   const existingOffer = await offerService.findOne({
@@ -222,18 +194,17 @@ router.post("/", permGuard.check(["USER", "ADMIN"]), async (req, res, next) => {
     submittedBy: submitter,
   });
   if (existingOffer)
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: "Already submitted an offer for this item!",
-      });
+    return res.status(400).json({
+      success: false,
+      message: "Already submitted an offer for this item!",
+    });
 
   const offer = {
     itemId: itemId,
     itemOwner: item.submittedby1,
     myOffer: req.body.myOffer,
     submittedBy: submitter,
+    messageReciever: item.submittedby1,
     // contactPhone: req.body.contactPhone,
     // contactEmail: req.body.contactEmail,
     offerMessage: req.body.offerMessage,
@@ -304,11 +275,7 @@ router.patch(
   permGuard.check(["USER", "ADMIN"]),
   (req, res, next) => {
     const id = req.params.offerId;
-    const updateOps = {};
-    for (const ops of req.body) {
-      updateOps[ops.propName] = ops.value;
-    }
-    Offer.update({ _id: id }, { $set: updateOps })
+    Offer.update({ _id: id }, { $set: { messageSeen: true } })
       .exec()
       .then((result) => {
         res.status(200).json({

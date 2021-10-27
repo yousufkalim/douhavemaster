@@ -123,6 +123,7 @@ class ChatForm extends Component {
                 <Button
                   disabled={!this.state.message}
                   onClick={() => {
+                    alert("hello");
                     this.sendMessage();
                   }}
                 >

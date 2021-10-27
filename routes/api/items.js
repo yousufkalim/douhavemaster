@@ -1074,6 +1074,7 @@ router.get("/search8/:state/:condition", (req, res, next) => {
  * Creates or posts a new item in the listing database.
  */
 router.post("/", permGuard.check(["USER", "ADMIN"]), (req, res, next) => {
+  console.log("helloOoooooooOoooooo");
   const item = new Item({
     name: req.body.name,
     itemImg: req.body.itemImg,

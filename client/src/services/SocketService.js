@@ -37,12 +37,12 @@ const SocketService = {
       const socket = new WebSocket(
         `${Constant.SOCKET_ENDPOINT}/?token=${token}`
       );
-
       // Connection opened
       socket.onopen = function(event) {
         const openedDate = new Date();
         socketBehaviorObject.next(socket);
       };
+      socketBehaviorObject.next(socket);
 
       // Listen for messages
       socket.onmessage = function(event) {

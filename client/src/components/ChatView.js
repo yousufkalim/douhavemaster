@@ -61,7 +61,7 @@ class ChatView extends Component {
    * @param {*} offer
    * @param {*} messages
    */
-  openConversation(offer, messages) {
+  async openConversation(offer, messages) {
     if (!this.state.loading) {
       const selectedRoomId = `${
         offer.itemOwner._id ? offer.itemOwner._id : offer.itemOwner
@@ -69,6 +69,10 @@ class ChatView extends Component {
         offer.submittedBy._id ? offer.submittedBy._id : offer.submittedBy
       }`;
       this.setState({ selectedOffer: offer, selectedRoomId });
+      const myOffer = await OfferService.updateOffer({
+        messageSeen: true,
+        offerId: offer._id,
+      });
     } else {
     }
   }

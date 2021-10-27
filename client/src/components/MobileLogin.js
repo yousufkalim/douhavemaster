@@ -4,6 +4,8 @@ import UserService from "../services/UserService";
 import { deleteFromStorage } from "../util/storage";
 import DEFAULT_IMAGE from "../img/user3.jpg";
 import Constant from "../util/Constant";
+import OfferService from "../services/OfferService";
+import { Badge } from "reactstrap";
 
 class MobileLogin extends Component {
   constructor(props) {
@@ -11,9 +13,18 @@ class MobileLogin extends Component {
 
     this.state = {
       showLogin: false,
+      count: "",
     };
     this.onLoginIcon = this.onLoginIcon.bind(this);
+    this.getAllItemOffers = this.getAllItemOffers.bind(this);
   }
+  componentDidMount() {
+    this.getAllItemOffers();
+  }
+  getAllItemOffers = async () => {
+    const offer = await OfferService.getItemsOffers();
+    this.setState({ count: offer.count });
+  };
 
   onLoginIcon = () => {
     if (this.state.showLogin) {
@@ -77,10 +88,22 @@ class MobileLogin extends Component {
         {isAuth ? (
           <div className="mobile-login-box">
             <p>
-              <a href="/messages">
+              <a
+                href="/messages"
+                style={{
+                  position: "relative",
+                  width: "100%",
+                }}
+              >
                 <BiConversation className="profile-icon" />
+                <Badge
+                  style={{ position: "absolute", right: 0 }}
+                  color="danger"
+                >
+                  {this.state.count !== 0 && this.state.count}
+                </Badge>
               </a>
-              <BiBell className="profile-icon" />
+
               <a style={{ color: "#000000" }} href="/userpanel">
                 {/* <BiUserCircle className="profile-icon" /> */}
                 <img
