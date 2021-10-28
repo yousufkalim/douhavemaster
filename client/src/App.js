@@ -44,7 +44,7 @@ import ItemService from "./services/ItemService";
 import UserService from "./services/UserService";
 import Constant from "./util/Constant";
 import { getFromStorage } from "./util/storage";
-
+import Axios from "axios";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -68,6 +68,8 @@ class App extends Component {
     };
 
     this.onTextChange = this.onTextChange.bind(this);
+    this.getUserVerify = this.getUserVerify.bind(this);
+
     this.onSearch = this.onSearch.bind(this);
     this.onDistanceChange = this.onDistanceChange.bind(this);
     this.onZipChange = this.onZipChange.bind(this);
@@ -160,36 +162,42 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.getUserVerify();
+  }
+  async getUserVerify() {
     const obj = getFromStorage("the_main_app");
     if (obj && obj.token) {
       const { token } = obj;
       //Verify
       if (token) {
-        fetch(`${Constant.API_ENDPOINT}/user/verify/${token}`)
-          .then((res) => res.json())
-          .then((json) => {
-            console.log("user", json);
-            if (json.message === "User Verified") {
-              const userSession = {
-                token,
-                userName: json.userName,
-                firstName: json.firstName,
-                userId: json.userId,
-                email: json.email,
-                profilePic: json.profilePic || "",
-                permissions: json.permissions || [],
-                emailConfirmed: json.emailConfirmed || false,
-                isAuth: true,
-              };
-              this.setState(userSession);
-              UserService.setUser(userSession);
-            } else {
-              UserService.deleteUserSession();
-              this.setState({
-                isAuth: false,
-              });
-            }
-          });
+        try {
+          let response =await Axios.get(
+            `${Constant.API_ENDPOINT}/user/verify/${token}`
+          );
+          let json = response.data;
+          if (json.message === "User Verified") {
+            const userSession = {
+              token,
+              userName: json.userName,
+              firstName: json.firstName,
+              userId: json.userId,
+              email: json.email,
+              profilePic: json.profilePic || "",
+              permissions: json.permissions || [],
+              emailConfirmed: json.emailConfirmed || false,
+              isAuth: true,
+            };
+            this.setState(userSession);
+            UserService.setUser(userSession);
+          } else {
+            UserService.deleteUserSession();
+            this.setState({
+              isAuth: false,
+            });
+          }
+        } catch (error) {
+          console.log("Errror-->", error);
+        }
       }
     } else {
       UserService.deleteUserSession();
@@ -198,7 +206,6 @@ class App extends Component {
       });
     }
   }
-
   render() {
     const {
       isAuth,

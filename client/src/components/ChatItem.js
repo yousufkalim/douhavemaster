@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BiUserCircle } from "react-icons/bi";
 import { Badge, Col, Row } from "reactstrap";
+import OfferService from "../services/OfferService";
 
 /**
  * Chat item
@@ -10,10 +11,17 @@ import { Badge, Col, Row } from "reactstrap";
 class ChatItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { offer: [] };
+    this.getAllItemOffers = this.getAllItemOffers.bind(this);
   }
-
-  componentDidMount() {}
+  componentDidMount() {
+    this.getAllItemOffers();
+  }
+  //spcific item offers
+  getAllItemOffers = async () => {
+    const offer = await OfferService.getItemOffers(this.props.item._id);
+    this.setState({ offer });
+  };
 
   render() {
     const item = this.props.item;
@@ -70,12 +78,17 @@ class ChatItem extends Component {
                 </Col>
               ) : (
                 <Col xs="12" className="text-left">
-                  <BiUserCircle className="user-icon" />
-                  <BiUserCircle className="user-icon" />
-                  <BiUserCircle className="user-icon" />
+                  {this.state.offer &&
+                    this.state.offer
+                      .slice(0, 6)
+                      .map((index) => (
+                        <BiUserCircle key={index} className="user-icon" />
+                      ))}
+
                   <Badge color="secondary" className="chat-messages-badge">
-                    {" "}
-                    +7{" "}
+                    {this.state.offer && this.state.offer.length > 6
+                      ? `${this.state.offer.length}+`
+                      : this.state.offer.length}
                   </Badge>
                 </Col>
               )}

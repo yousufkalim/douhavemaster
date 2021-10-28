@@ -193,6 +193,7 @@ router.post("/", permGuard.check(["USER", "ADMIN"]), async (req, res, next) => {
     itemId: itemId,
     submittedBy: submitter,
   });
+  console.log(existingOffer, "existingOffer");
   if (existingOffer)
     return res.status(400).json({
       success: false,

@@ -54,7 +54,6 @@ class OfferSubmit extends Component {
 
       // Getting the socket client
       SocketService.getSocketBehaviorObject().subscribe((socket) => {
-        console.log("socket", socket);
         if (socket) {
           self.setState({ socket });
         }
@@ -134,18 +133,19 @@ class OfferSubmit extends Component {
           }
         } catch (error) {
           console.log("error--->", error);
-          const message =
-            error &&
-            error.response &&
-            error.response.data &&
-            error.response.data.message;
+          if (error.response) {
+            const message = error.response.data.message;
+            alert(message);
+          }
           this.setState({ loading: false });
           this.closeModal();
-          alert(message);
         }
       } else {
         alert("Invalid message");
       }
+    } else {
+      this.setState({ loading: false });
+      this.closeModal();
     }
   }
 
