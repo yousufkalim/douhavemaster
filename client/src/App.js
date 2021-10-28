@@ -171,7 +171,7 @@ class App extends Component {
       //Verify
       if (token) {
         try {
-          let response =await Axios.get(
+          let response = await Axios.get(
             `${Constant.API_ENDPOINT}/user/verify/${token}`
           );
           let json = response.data;
@@ -293,20 +293,31 @@ class App extends Component {
                   width: "5rem",
                   height: "5rem",
                   position: "absolute",
-                  top: "50%",
-                  left: "55%",
+                  top: "20rem",
+                  left: "52%",
                 }}
               />
+
               <h4
                 style={{
                   color: "#000",
                   position: "absolute",
-                  top: "70%",
-                  left: "52%",
+                  top: "26rem",
+                  left: "50%",
                 }}
               >
                 Did You Know
               </h4>
+              <p
+                style={{
+                  color: "#000",
+                  position: "absolute",
+                  top: "28rem",
+                  left: "45%",
+                }}
+              >
+                Website without visitors is like a ship lost in the horizon.
+              </p>
               <SearchResults
                 isAuth={isAuth}
                 userId={userId}
