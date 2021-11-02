@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import MenuLine from '../img/thin-white-line-png-6.png';
+import React, { Component } from "react";
+import MenuLine from "../img/thin-white-line-png-6.png";
 
 class NavBar extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   render() {
     let navLinks = this.props.navLinks;
@@ -26,20 +26,30 @@ class NavBar extends Component {
         }} /> */}
         <div className="NavBarItems">
           {navLinks.map((navLinks, index) =>
-            <a key={index} href={navLinks.link}>{navLinks.label}</a>
+            navLinks.label == "About Us" ? (
+              <a key={index} href={navLinks.link} target="_blank">
+                {navLinks.label}
+              </a>
+            ) : (
+              <a key={index} href={navLinks.link}>
+                {navLinks.label}
+              </a>
+            )
           )}
         </div>
         <hr
           style={{
-            backgroundColor: '#F9F3EF',
-            width: '70%',
-          }} />
+            backgroundColor: "#F9F3EF",
+            width: "70%",
+          }}
+        />
         <hr
           style={{
-            backgroundColor: '#F9F3EF',
-            width: '50%',
-            marginTop: '5px',
-          }} />
+            backgroundColor: "#F9F3EF",
+            width: "50%",
+            marginTop: "5px",
+          }}
+        />
         {/* <div className="NavBar">
           <div className="NavBarItems">
 

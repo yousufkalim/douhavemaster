@@ -14,10 +14,19 @@ const itemCacheService = require("../../services/item-cache");
 
 //Develop by Aashir Shahid
 router.get("/search-products", (req, res, next) => {
-  const regex = RegExp(req.query.term, "i");
-  let obj = req.query;
+  const regex = RegExp(req.query.locationZip, "i");
+  let searchItem = req.query.category;
+  let locationZip = req.query.locationZip;
+
   // Object.assign(obj, { description: req.query.category })
-  Item.find({ ...obj, $or: [{ name: regex }, { description: regex }] })
+  Item.find({
+    $and: [
+      // { name: regex },
+      { locationZip: { $regex: locationZip, $options: "$i" } },
+      // { category: { $regex: searchItem, $options: "$i" } },
+      { name: { $regex: searchItem, $options: "$i" } },
+    ],
+  })
     .sort({ createdAt: -1 })
     .select(
       "name _id itemImg pic budget category condition description location locationState locationZip submittedby submittedby1 carmake carmodel caryear cellmake cellmodel cellcarrier cellos gamesystem createdAt expirationDate contactinfo"
@@ -83,7 +92,7 @@ router.get("/", async (req, res, next) => {
 
   // Build the query object.
   let query = {};
-  if (category && category !== "all") query.category = category;
+  if (category && category !== "all") query.category = `${category}`;
   if (lastId) query._id = { $lt: lastId };
 
   if (zipCode) {
@@ -91,7 +100,6 @@ router.get("/", async (req, res, next) => {
       (await itemService.getZipCodesAround(zipCode, distance).catch()) || [];
     if (zipCodes.length > 0) query.locationZip = { $in: zipCodes };
   }
-
   Item.find(query)
     .sort({ _id: -1 })
     .limit(limit)
@@ -152,7 +160,6 @@ router.get("/:category", (req, res, next) => {
   let query = {};
   const category = req.params.category || "all";
   if (category && category !== "all") query = { category };
-
   Item.find(query)
     .sort({ createdAt: -1 })
     .select(
@@ -199,6 +206,7 @@ router.get("/:category", (req, res, next) => {
       res.status(200).json(response);
     })
     .catch((err) => {
+      console.log(err.message, "err----->");
       res.status(500).json({
         success: false,
         error: err,

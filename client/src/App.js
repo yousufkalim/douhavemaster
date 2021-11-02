@@ -610,7 +610,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Truks/Off-Road"
+                      category="Vehicles/Trucks/Off-Road"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -626,7 +626,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Truks/Low-Rides"
+                      category="Vehicles/Trucks/Low-Rides"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -642,7 +642,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Truks/Import"
+                      category="Vehicles/Trucks/Import"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -658,7 +658,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Truks/Work"
+                      category="Vehicles/Trucks/Work"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -674,7 +674,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Car/Commuter"
+                      category="Vehicles/Cars/Commuter"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -686,11 +686,11 @@ class App extends Component {
                   )}
                 />
                 <Route
-                  path={"/vintagecar"}
+                  path={"/vintagercar"}
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Car/Vintage"
+                      category="Vehicles/Cars/Vintage"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -706,7 +706,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Car/Import"
+                      category="Vehicles/Cars/Import"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -722,7 +722,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Car/Muscle"
+                      category="Vehicles/Cars/Muscle"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -866,7 +866,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Records"
+                      category="Collectibles/Records/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -882,7 +882,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Instruments"
+                      category="Vehicles/Instruments/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -898,7 +898,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Vehicles/Arts"
+                      category="Collectibles/Arts/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -914,7 +914,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Electronics/Stereos"
+                      category="Electronics/Stereos/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -930,7 +930,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Electronics/Personal-Electronics"
+                      category="Electronics/Personal-Electronics/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -946,7 +946,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Electronics/Video-Games"
+                      category="Electronics/Video-Games/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -962,7 +962,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Electronics/Vintage-Console-Games"
+                      category="Electronics/Vintage-Console-Games/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -978,7 +978,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Home/Furniture"
+                      category="Home/Furniture/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -994,7 +994,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Home/Decore"
+                      category="Home/Decore/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -1010,7 +1010,23 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Home/Modern"
+                      category="Home/Modern/"
+                      isAuth={isAuth}
+                      userName={userName}
+                      firstName={firstName}
+                      userId={userId}
+                      token={token}
+                      zipCode={zipCode}
+                      distance={distance}
+                    />
+                  )}
+                />
+                <Route
+                  path={"/vintagehome"}
+                  render={(props) => (
+                    <CategoryItems
+                      {...props}
+                      category="Home/Vintage/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -1026,7 +1042,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Home/Other"
+                      category="Home/Other/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}
@@ -1042,7 +1058,7 @@ class App extends Component {
                   render={(props) => (
                     <CategoryItems
                       {...props}
-                      category="Fashion/Other"
+                      category="Fashion/Others/"
                       isAuth={isAuth}
                       userName={userName}
                       firstName={firstName}

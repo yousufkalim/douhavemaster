@@ -8,6 +8,7 @@ import SubMenu from "./SubMenu";
 
 class CatResults extends Component {
   constructor(props) {
+    const zipCodeStr = localStorage.getItem("zipCode");
     super(props);
 
     this.state = {
@@ -20,7 +21,7 @@ class CatResults extends Component {
       singleResult: "",
       filteredResults: "",
       lastId: "",
-      zipCode: "",
+      zipCode: zipCodeStr ? zipCodeStr : "",
       distance: "",
       searchTerm: "",
       errorMessage: "",
@@ -32,6 +33,7 @@ class CatResults extends Component {
       showSaveItem: false,
       token: this.props.token,
     };
+    console.log(this.props.category, "this.props.categorytrucks");
 
     this.onTextChange = this.onTextChange.bind(this);
     this.onItemFull = this.onItemFull.bind(this);
@@ -62,6 +64,7 @@ class CatResults extends Component {
   }
 
   onZipChange(event) {
+    localStorage.setItem("zipCode", event.target.value);
     this.setState({
       zipCode: event.target.value,
     });
@@ -69,6 +72,7 @@ class CatResults extends Component {
   componentDidMount() {
     const self = this;
     let category = this.props.category;
+
     this.setState({ category });
     this.getItems();
 
@@ -350,7 +354,9 @@ class CatResults extends Component {
             onKeyPress={this.onKeyPress}
             onChange={this.onZipChange}
           />
-          <button onClick={this.onSearch}>GO</button>
+          <button type="button" onClick={this.onSearch}>
+            GO
+          </button>
         </div>
         <hr
           style={{
@@ -392,7 +398,7 @@ class CatResults extends Component {
               hasMore={!this.state.disableInfiniteScroll}
               // loader={<Spinner className="block-center" style={{ width: '5rem', height: '5rem' }} />}
             >
-              <Row style={{ margin: "0px" }}>
+              <Row style={{ marginBottom: "0px" }}>
                 {this.state.filteredResults.length > 0 ? (
                   this.state.filteredResults.map((model) => (
                     <Col xs="6" sm="6" md="3" key={model._id}>

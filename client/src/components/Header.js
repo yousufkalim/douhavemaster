@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PostButton from "../img/Button- Post It.png";
-import Logo from "../img/Primary Logo- Off Black.png";
+import Logo from "../img/image-logo.png";
 import TopBarGold from "../img/Top Bar- Gold.png";
 import Drawer from "./Drawer";
 import Login from "./Login";

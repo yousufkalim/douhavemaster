@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import CatResults from './CatResults';
-
+import React, { Component } from "react";
+import CatResults from "./CatResults";
 
 class Auto extends Component {
   render() {
     return (
       <div className="Antiques">
         <h1>Auto</h1>
-        <CatResults category={'Vehicles/Truks/Import'}
+        <CatResults
+          category={"Vehicles/Trucks/Import"}
           isAuth={this.props.isAuth}
           userName={this.props.userName}
           firstName={this.props.firstName}

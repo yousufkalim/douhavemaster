@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import CatResults from './CatResults';
+import React, { Component } from "react";
+import CatResults from "./CatResults";
 
 class CategoryItems extends Component {
   render() {
