@@ -28,7 +28,7 @@
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.797.0",
-    "axios": "^0.21.1",
+    "axios": "^0.33.0",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
     "body-parser": "^1.18.3",
