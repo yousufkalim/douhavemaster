@@ -48,7 +48,7 @@
     "mongodb": "^3.5.6",
     "mongoose": "^5.3.4",
     "morgan": "^1.9.1",
-    "multer": "^1.4.1",
+    "multer": "^2.3.0",
     "node-fetch": "^2.6.0",
     "page-metadata-parser": "^1.1.4",
     "path": "^0.12.7",
